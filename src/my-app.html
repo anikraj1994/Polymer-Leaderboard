@@ -1,0 +1,97 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-query.html">
+<link rel="import" href="../src/board-element.html">
+
+<dom-module id="my-app">
+  <template>
+    <style>
+      :host {
+        --app-primary-color: #4285f4;
+        --app-secondary-color: black;
+      }
+
+      app-header {
+        color: #fff;
+        background-color: var(--app-primary-color);
+      }
+      app-header paper-icon-button {
+        --paper-icon-button-ink-color: white;
+      }
+      .spinnercontainer {
+        margin:auto;
+       display: table;
+    margin-top: 16px;
+    }
+
+
+     
+    </style>
+
+      <app-header-layout >
+
+        <app-header fixed  effects="waterfall">
+          <app-toolbar>
+            <div main-title>Share Contest - Leaderboard</div>
+          </app-toolbar>
+        </app-header>
+        <div>
+          <div class="spinnercontainer"><paper-spinner id="spinner" active></paper-spinner>
+          </div>
+          
+          <template is="dom-repeat" items="{{_computePosts(leaderData)}}">
+
+    <board-element name="{{item.name}}" points="{{item.points}}"></board-element>
+    </template>
+  </div>
+       </app-header-layout>
+       <firebase-app auth-domain="h4p-share-contest.firebaseapp.com"
+  database-url="https://h4p-share-contest.firebaseio.com/"
+  api-key="AIzaSyCuIu3sL4wyfNGZpHqXAo8D5x6W3_KaCTk">
+</firebase-app>
+<firebase-document
+  path="/board"
+  data="{{leaderData}}">
+</firebase-document>
+<!-- <firebase-query
+    path="/board"
+    data="{{leaderData}}">
+</firebase-query> -->
+  </template>
+
+  <script>
+    Polymer({
+      is: 'my-app',
+
+      properties: {
+      
+      },
+
+      observers: [
+      ],
+      dataChanged: function (newData, oldData) {
+    console.log(newData+"    "+oldData);
+  },
+      _onDataGet: function(x){
+        console.log("data get "+ x);
+      },
+      _computePosts: function(posts) {
+            console.log(posts.length);
+            if (posts.length > 0) {
+                var spinner = this.$.spinner;
+                spinner.active = false;
+                spinner.style.display = 'none';
+            }
+            return Object.keys(posts).map(function(k) {
+                return posts[k]
+            }).sort(function(a, b){return b.points-a.points});;
+        }
+
+    });
+  </script>
+</dom-module>

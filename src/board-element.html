@@ -1,0 +1,69 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+
+<dom-module id="board-element">
+  <template>
+    <style>
+      :host {
+        --app-primary-color: #4285f4;
+        --app-secondary-color: black;
+      }
+      .container {
+        width: 100%;
+        max-width: 480px;
+        margin:auto;
+        margin-top: 16px;
+
+      }
+      paper-card{
+        margin: 12px; 
+      }
+  paper-card.rate { @apply(--layout-horizontal); }
+  .rate-image {
+    width: 60px;
+    height: 60px;
+    margin: 16px;
+  }
+  .rate-content {
+    @apply(--layout-flex);
+    float: left;
+  }
+  .rate-header { @apply(--paper-font-headline); }
+  .rate-name { color: var(--paper-grey-600); margin: 10px 0; }
+  </style>
+<div class="container">
+<paper-card class="rate">
+ 
+  <img class="rate-image" src="/accnt.png"></img>
+   <div class="rate-content">
+    <div class="card-content">
+      <div class="rate-header">{{name}}</div>
+      <div class="rate-name">{{points}}</div>
+    </div>
+    
+  </div>
+</paper-card>
+  
+</div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'board-element',
+
+      properties: {
+        name :{
+          type : String
+        },
+        points :{
+          type : Number
+        }
+      },
+
+      observers: [
+        
+      ]
+
+    });
+  </script>
+</dom-module>
